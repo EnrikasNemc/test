@@ -8,7 +8,7 @@ class CoreModel
     private $servername = 'localhost';
     private $username = 'root';
     private $password = '';
-    private $dbname = 'en_employee';
+    private $dbname = 'en_employees';
 
     private $conn;
 
@@ -83,7 +83,7 @@ class CoreModel
 
     private function getProductOptions(): string
     {
-        $result = (new Product())->list();
+        $result = (new employee())->list();
         $options = '';
 
         foreach($result as $value){
@@ -102,6 +102,13 @@ class CoreModel
         $options = rtrim($options, ', ');
 
         $query = "UPDATE `". $this->table."` SET". $options . " WHERE `id`='$id'";
+
+        return $this->db_query($query);
+    }
+
+    public function delete($id)
+    {
+        $query = "DELETE FROM `". $this->table. "` WHERE `id`='$id'";
 
         return $this->db_query($query);
     }

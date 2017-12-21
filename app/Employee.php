@@ -3,6 +3,8 @@
 namespace app;
 
 
+use app\controller\EmployeeController;
+
 class Employee
 {
     public function __construct()
@@ -10,7 +12,7 @@ class Employee
         $method = $_SERVER['REQUEST_METHOD'];
 
         if ($method == 'GET' && (!isset($_GET['view']) || !isset($_GET['action']))) {
-            (new UsersController())->login();
+            (new EmployeeController())->create();
             die();
         }
 
@@ -18,83 +20,44 @@ class Employee
         $view = $_GET['view'];
         $action = $_GET['action'];
 
+
         if ($method == 'GET') {
-            (new UsersController())->isLogged();
             switch ($view) {
 
-                case 'product':
+                case 'employee':
                     if ($action == 'new') {
-                        (new ProductController())->create();
+                        (new EmployeeController())->create();
                     } elseif ($action == 'list') {
-                        (new ProductController())->list();
+                        (new EmployeeController())->list();
                     } elseif ($action = 'edit') {
-                        (new ProductController())->edit();
+                        (new EmployeeController())->edit();
                     }
 
                     break;
-
-                case 'product-history' :
-
-                    if ($action == 'new')
-                        (new ProductHistoryController())->create();
-
-                    elseif ($action == 'list')
-                        (new ProductHistoryController())->list();
-
-                    break;
-                case 'users' :
-
-                    if ($action == 'new') {
-                        (new UsersController())->create();
-                    } elseif ($action == 'list')
-                        (new UsersController())->list();
-
-                    break;
-
             }
         } elseif ($method == 'POST') {
             switch ($view) {
-                case 'product':
-                    (new UsersController())->isLogged();
+                case 'employee':
                     if ($action == 'create')
-                        (new ProductController())->store();
+                        (new EmployeeController())->store();
                     elseif ($action == 'update')
-                        (new ProductController())->update();
+                        (new EmployeeController())->update();
                     elseif ($action == 'new') {
-                        (new ProductController())->create();
+                        (new EmployeeController())->create();
                     } elseif ($action == 'list') {
-                        (new ProductController())->list();
+                        (new EmployeeController())->list();
+                    }elseif ($action == 'delete') {
+                        (new EmployeeController())->delete();
                     }
+
 
                     break;
 
-                case 'product-history':
-
-                    if ($action == 'create') {
-                        (new ProductHistoryController())->store();
-                    } elseif ($action == 'new')
-                        (new ProductHistoryController())->create();
-                    elseif ($action == 'list')
-                        (new ProductHistoryController())->list();
-
-                    break;
-                case 'users' :
-                    if ($action == 'new') {
-                        (new UsersController())->create();
-                    }
-
-                    if ($action == 'create') {
-                        (new UsersController())->isLogged();
-                        (new UsersController())->store();
-                    }
-
-                    if ($action == 'auth')
-                        (new UsersController())->auth();
-                    break;
 
             }
         }
 
         echo "Workplace online!!!";
     }
+
 }
